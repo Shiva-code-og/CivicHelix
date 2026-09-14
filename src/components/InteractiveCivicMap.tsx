@@ -11,6 +11,7 @@ import {
   Navigation,
   Locate,
   Filter,
+  X,
 } from 'lucide-react';
 
 interface InteractiveCivicMapProps {
@@ -399,7 +400,7 @@ export default function InteractiveCivicMap({
       )}
 
       {/* ─── Map Container ─── */}
-      <div className="relative w-full h-[460px] border border-slate-300 overflow-hidden bg-slate-100"
+      <div className="relative w-full h-[280px] xs:h-[320px] sm:h-[400px] lg:h-[460px] border border-slate-300 overflow-hidden bg-slate-100"
         style={{ borderRadius: 0 }}
       >
         {!mapReady || !userLocation ? (
@@ -416,7 +417,7 @@ export default function InteractiveCivicMap({
         {/* ─── Selected Problem Quick Card ─── */}
         {selectedProblem && (
           <div
-            className="absolute bottom-3 left-3 right-3 sm:right-auto sm:max-w-md z-20 bg-white p-4 border border-slate-200 shadow-lg space-y-2"
+            className="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-auto sm:max-w-md z-20 bg-white p-3.5 sm:p-4 border border-slate-200 shadow-xl space-y-2"
             style={{ borderRadius: 0 }}
           >
             <div className="flex items-center justify-between gap-2">
@@ -426,9 +427,19 @@ export default function InteractiveCivicMap({
               >
                 {selectedProblem.category.replace(/_/g, ' ')}
               </span>
-              <div className="flex items-center gap-1 text-[11px] font-extrabold text-amber-600">
-                <AlertTriangle className="w-3.5 h-3.5 text-amber-500" />
-                <span>Priority {selectedProblem.priorityScore}/100</span>
+              <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1 text-[11px] font-extrabold text-amber-600">
+                  <AlertTriangle className="w-3.5 h-3.5 text-amber-500" />
+                  <span>Priority {selectedProblem.priorityScore}/100</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setSelectedProblem(null)}
+                  className="p-1 text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+                  title="Close card"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
               </div>
             </div>
 

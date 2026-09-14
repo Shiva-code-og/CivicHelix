@@ -129,10 +129,10 @@ export default function CitizenPortalPage() {
           </p>
         </div>
 
-        <div className="flex bg-white p-1 rounded-xl border border-slate-200 shadow-xs self-start">
+        <div className="flex overflow-x-auto max-w-full scrollbar-none bg-white p-1 rounded-xl border border-slate-200 shadow-xs self-start">
           <button
             onClick={() => setActiveTab('submit')}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs font-bold transition-all shrink-0 ${
               activeTab === 'submit'
                 ? 'bg-blue-600 text-white shadow-xs'
                 : 'text-slate-600 hover:text-blue-600'
@@ -142,7 +142,7 @@ export default function CitizenPortalPage() {
           </button>
           <button
             onClick={() => setActiveTab('explore')}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs font-bold transition-all shrink-0 ${
               activeTab === 'explore'
                 ? 'bg-blue-600 text-white shadow-xs'
                 : 'text-slate-600 hover:text-blue-600'
@@ -152,7 +152,7 @@ export default function CitizenPortalPage() {
           </button>
           <button
             onClick={() => setActiveTab('track')}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs font-bold transition-all shrink-0 ${
               activeTab === 'track'
                 ? 'bg-blue-600 text-white shadow-xs'
                 : 'text-slate-600 hover:text-blue-600'
@@ -168,7 +168,7 @@ export default function CitizenPortalPage() {
           {/* Submission Form Card */}
           <form
             onSubmit={handleSubmit}
-            className="lg:col-span-7 p-6 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-5"
+            className="lg:col-span-7 p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-white border border-slate-200 shadow-sm space-y-4 sm:space-y-5"
           >
             {submissionSuccess && (
               <div className="p-4 rounded-2xl bg-blue-50 border border-blue-200 text-slate-800 text-xs space-y-2 animate-fade-in">
@@ -253,7 +253,7 @@ export default function CitizenPortalPage() {
                 className="w-full px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-xs font-semibold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all"
               />
               <span className="text-[10px] text-slate-500 font-medium mt-1 block">
-                💡 Tip: Click anywhere on the map on the right to set exact coordinates &amp; address!
+                💡 Tip: Click anywhere on the map to set exact coordinates &amp; address!
               </span>
             </div>
 

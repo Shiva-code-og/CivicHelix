@@ -22,12 +22,14 @@ import {
   AlertCircle,
   Coins,
   Landmark,
+  Menu,
 } from 'lucide-react';
 import { useAuth, getRoleAvatarColorHex } from '@/context/AuthContext';
 
 interface HeaderProps {
   title?: string;
   subtitle?: string;
+  onToggleMobileSidebar?: () => void;
 }
 
 interface NotificationItem {
@@ -104,6 +106,7 @@ const FILTER_CATEGORIES = {
 export default function Header({
   title = 'Civic Command Dashboard',
   subtitle = 'Civic infrastructure & university capstone collaboration platform',
+  onToggleMobileSidebar,
 }: HeaderProps) {
   const { currentUser, setIsProfileOpen } = useAuth();
 
@@ -171,19 +174,33 @@ export default function Header({
   });
 
   return (
-    <header className="w-full flex items-center justify-between gap-4 pb-4 border-b border-slate-200 relative z-30">
-      {/* Page Title & Clean Subtitle (No clutter badges) */}
-      <div className="min-w-max">
-        <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-          {title}
-        </h1>
-        <p className="text-xs text-slate-500 font-medium hidden md:block mt-0.5">
-          {subtitle}
-        </p>
+    <header className="w-full flex items-center justify-between gap-2 sm:gap-4 pb-3 sm:pb-4 border-b border-slate-200 relative z-30">
+      {/* Mobile Hamburger + Page Title */}
+      <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+        {/* Hamburger Menu — visible only on mobile */}
+        {onToggleMobileSidebar && (
+          <button
+            type="button"
+            onClick={onToggleMobileSidebar}
+            className="lg:hidden p-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 hover:text-slate-900 transition-all shadow-xs shrink-0"
+            aria-label="Toggle navigation menu"
+          >
+            <Menu className="w-4 h-4 sm:w-5 sm:h-5" />
+          </button>
+        )}
+
+        <div className="min-w-0 flex-1">
+          <h1 className="text-sm xs:text-base sm:text-xl md:text-2xl font-black text-slate-900 tracking-tight truncate max-w-[160px] xs:max-w-[220px] sm:max-w-none">
+            {title}
+          </h1>
+          <p className="text-xs text-slate-500 font-medium hidden md:block mt-0.5">
+            {subtitle}
+          </p>
+        </div>
       </div>
 
       {/* Right Actions Cluster */}
-      <div className="flex items-center gap-2.5 shrink-0">
+      <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
         
         {/* =========================================================================
             ADVANCED SEARCH & FILTRATION (Companies, Locations, Universities, Sectors)
@@ -395,7 +412,7 @@ export default function Header({
 
           {/* Notifications Dropdown Panel */}
           {isNotifOpen && (
-            <div className="absolute right-0 top-full mt-2 w-80 sm:w-96 bg-white rounded-3xl border border-slate-200 shadow-2xl z-50 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+            <div className="absolute right-0 top-full mt-2 w-[calc(100vw-2rem)] sm:w-96 max-w-96 bg-white rounded-3xl border border-slate-200 shadow-2xl z-50 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
               {/* Dropdown Header */}
               <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
                 <div className="flex items-center gap-2">
@@ -531,7 +548,7 @@ export default function Header({
         <button
           type="button"
           onClick={() => setIsProfileOpen(true)}
-          className="flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-xl bg-white border border-slate-200 hover:border-blue-300 transition-all shadow-xs group"
+          className="flex items-center gap-2 p-1.5 sm:pl-2 sm:pr-3 sm:py-1.5 rounded-xl bg-white border border-slate-200 hover:border-blue-300 transition-all shadow-xs group"
         >
           {(() => {
             const avatarColor = getRoleAvatarColorHex(currentUser.role);

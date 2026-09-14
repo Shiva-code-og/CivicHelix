@@ -330,23 +330,23 @@ export default function GovernmentCommandPortalPage() {
       {/* =========================================================================
           3. UNIVERSITY CAPSTONE PROTOTYPE REVIEW TABLE (Clean White & Blue Design)
       ========================================================================= */}
-      <div className="p-6 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-4">
-        <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+      <div className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-white border border-slate-200 shadow-sm space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-4">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-blue-100 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-xl bg-blue-100 flex items-center justify-center shrink-0">
               <GraduationCap className="w-4 h-4 text-blue-600" />
             </div>
-            <h3 className="font-extrabold text-base text-slate-900">
+            <h3 className="font-extrabold text-sm sm:text-base text-slate-900">
               University Prototype Milestone Verification
             </h3>
           </div>
-          <span className="text-xs text-blue-600 font-bold bg-blue-50 px-3 py-1 rounded-full border border-blue-200">
+          <span className="text-[11px] sm:text-xs text-blue-600 font-bold bg-blue-50 px-3 py-1 rounded-full border border-blue-200 self-start sm:self-auto">
             Sign-off unlocks CSR grant disbursements
           </span>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs border-collapse">
+        <div className="overflow-x-auto scrollbar-none -mx-1 px-1">
+          <table className="w-full min-w-[620px] text-left text-xs border-collapse">
             <thead>
               <tr className="border-b border-slate-200 text-slate-400">
                 <th className="py-3 font-bold">Prototype Title &amp; Team</th>

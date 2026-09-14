@@ -13,14 +13,17 @@ import {
   Plus,
   Layers,
   ChevronRight,
+  X,
 } from 'lucide-react';
 import { Role } from '@/types';
 
 interface SidebarProps {
   onOpenNewTask?: () => void;
+  isMobile?: boolean;
+  onClose?: () => void;
 }
 
-export default function Sidebar({ onOpenNewTask }: SidebarProps) {
+export default function Sidebar({ onOpenNewTask, isMobile, onClose }: SidebarProps) {
   const pathname = usePathname();
   const { currentUser, setIsProfileOpen } = useAuth();
 
@@ -64,7 +67,7 @@ export default function Sidebar({ onOpenNewTask }: SidebarProps) {
   const visibleToolItems = toolsNavItems.filter((item) => item.allowedRoles.includes(currentUser.role));
 
   return (
-    <aside className="fixed left-0 top-0 bottom-0 w-64 bg-white/95 backdrop-blur-md border-r border-slate-200/90 flex flex-col justify-between h-screen overflow-y-auto select-none shrink-0 z-40 shadow-xs">
+    <aside className={`${isMobile ? 'relative' : 'fixed left-0 top-0 bottom-0'} w-64 bg-white/95 backdrop-blur-md border-r border-slate-200/90 flex flex-col justify-between h-screen overflow-y-auto select-none shrink-0 z-40 shadow-xs`}>
       {/* Top Brand & Navigation */}
       <div className="p-5 space-y-6">
         {/* Brand Header */}
@@ -80,6 +83,17 @@ export default function Sidebar({ onOpenNewTask }: SidebarProps) {
               Civic Innovation Platform
             </p>
           </div>
+
+          {/* Mobile Close Button */}
+          {isMobile && onClose && (
+            <button
+              type="button"
+              onClick={onClose}
+              className="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-colors shrink-0"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
         </div>
 
         {/* Quick Report CTA */}

@@ -103,51 +103,69 @@ export default function HomePage() {
       <div className="absolute bottom-1/4 left-1/2 -translate-x-1/2 translate-y-1/2 w-[500px] h-[300px] bg-amber-100/30 blur-[110px] rounded-full pointer-events-none -z-10" />
 
       {/* =========================================================================
-          TOP-RIGHT FLOATING "CONTINUE TO DASHBOARD"
+          TOP NAVBAR: Brand Logo & Actions (Mobile responsive)
       ========================================================================= */}
-      <div className="fixed top-5 right-5 sm:top-6 sm:right-8 z-50">
-        {isLoggedIn ? (
-          <Link
-            href={getRoleDestination(activeRole)}
-            className="px-5 py-2.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold tracking-wide shadow-md shadow-blue-500/25 transition-all flex items-center gap-2 active:scale-95 hover:shadow-lg"
-          >
-            <span>Continue to Dashboard</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
-        ) : (
-          <div className="flex items-center gap-2">
-            <Link
-              href="/login"
-              className="px-4 py-2 rounded-full bg-white/95 backdrop-blur-md text-slate-800 text-xs font-bold border border-slate-200 shadow-xs hover:shadow-sm transition-all"
-            >
-              Login
-            </Link>
-            <button
-              type="button"
-              onClick={() => setIsJoinModalOpen(true)}
-              className="px-4 py-2 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold tracking-wide shadow-md shadow-blue-500/25 transition-all flex items-center gap-1.5 active:scale-95"
-            >
-              <span>Select Role</span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-white" />
-            </button>
+      <header className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-8 py-3 sm:py-4 bg-[#FAFAFC]/90 backdrop-blur-md border-b border-slate-200/60 flex items-center justify-between">
+        {/* Brand Logo */}
+        <Link href="/" className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-xl bg-[#1E3A8A] text-white flex items-center justify-center font-black text-xs shadow-md shadow-blue-500/20">
+            CH
           </div>
-        )}
-      </div>
+          <div className="flex flex-col text-left">
+            <span className="text-sm sm:text-base font-black text-slate-950 tracking-tight leading-none">
+              CivicHelix
+            </span>
+            <span className="text-[9px] font-bold text-blue-600 uppercase tracking-wider leading-none mt-0.5">
+              SIH 2026 Grid
+            </span>
+          </div>
+        </Link>
 
-      <div className="w-full max-w-6xl mx-auto flex flex-col items-center text-center">
+        {/* Right Actions */}
+        <div>
+          {isLoggedIn ? (
+            <Link
+              href={getRoleDestination(activeRole)}
+              className="px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold tracking-wide shadow-md shadow-blue-500/25 transition-all flex items-center gap-1.5 sm:gap-2 active:scale-95 hover:shadow-lg"
+            >
+              <span>Dashboard</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Link
+                href="/login"
+                className="px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white text-slate-800 text-xs font-bold border border-slate-200 shadow-xs hover:shadow-sm transition-all"
+              >
+                Login
+              </Link>
+              <button
+                type="button"
+                onClick={() => setIsJoinModalOpen(true)}
+                className="px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold tracking-wide shadow-md shadow-blue-500/25 transition-all flex items-center gap-1 active:scale-95"
+              >
+                <span>Select Role</span>
+                <ArrowUpRight className="w-3.5 h-3.5 text-white" />
+              </button>
+            </div>
+          )}
+        </div>
+      </header>
+
+      <div className="w-full max-w-6xl mx-auto flex flex-col items-center text-center pt-16 sm:pt-20 pb-8">
         
         {/* =========================================================================
-            THE ALIEN DESIGN HERO EDITORIAL TYPOGRAPHY
+            THE ALIEN DESIGN HERO EDITORIAL TYPOGRAPHY (Responsive & Non-overlapping)
         ========================================================================= */}
-        <div className="space-y-3 sm:space-y-4 max-w-5xl tracking-tight mt-6 sm:mt-10">
+        <div className="space-y-4 sm:space-y-6 max-w-5xl tracking-tight mt-4 sm:mt-8 w-full">
           
-          {/* Headline Line 1 */}
-          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-slate-950 uppercase leading-none">
+          {/* Main Hero Headline Row 1 */}
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-3xl xs:text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-slate-950 uppercase leading-none">
             <span>Engineering</span>
             
             {/* Dark Marquee Box */}
-            <div className="relative inline-flex items-center overflow-hidden bg-slate-950 text-white rounded-xl px-4 sm:px-6 py-2 sm:py-3.5 shadow-xl border border-slate-800 max-w-[240px] sm:max-w-[340px] h-[48px] sm:h-[68px]">
-              <div className="animate-marquee whitespace-nowrap text-xs sm:text-base font-black tracking-wider text-amber-300 flex items-center gap-4">
+            <div className="relative inline-flex items-center overflow-hidden bg-slate-950 text-white rounded-lg sm:rounded-xl px-2.5 sm:px-6 py-1 sm:py-3.5 shadow-xl border border-slate-800 max-w-[170px] xs:max-w-[210px] sm:max-w-[340px] h-[34px] xs:h-[40px] sm:h-[68px]">
+              <div className="animate-marquee whitespace-nowrap text-[9px] xs:text-[11px] sm:text-base font-black tracking-wider text-amber-300 flex items-center gap-3 sm:gap-4">
                 <span>★ TRIPLE-HELIX VERIFIED</span>
                 <span>★ NO PAPER REPORTS</span>
                 <span>★ REAL HARDWARE</span>
@@ -160,13 +178,13 @@ export default function HomePage() {
             <span>Civic</span>
           </div>
 
-          {/* Headline Line 2 */}
-          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-slate-950 uppercase leading-none">
+          {/* Main Hero Headline Row 2 */}
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-3xl xs:text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-slate-950 uppercase leading-none">
             <span>Solutions</span>
             
-            {/* Radiant Yellow Marquee Box (Sleek Geometric Box) */}
-            <div className="relative inline-flex items-center overflow-hidden bg-amber-400 text-slate-950 rounded-xl px-4 sm:px-6 py-2 sm:py-3.5 shadow-xl border border-amber-300 max-w-[260px] sm:max-w-[360px] h-[48px] sm:h-[68px]">
-              <div className="animate-marquee-reverse whitespace-nowrap text-xs sm:text-base font-black tracking-wider text-slate-950 flex items-center gap-4">
+            {/* Radiant Yellow Marquee Box */}
+            <div className="relative inline-flex items-center overflow-hidden bg-amber-400 text-slate-950 rounded-lg sm:rounded-xl px-2.5 sm:px-6 py-1 sm:py-3.5 shadow-xl border border-amber-300 max-w-[180px] xs:max-w-[220px] sm:max-w-[360px] h-[34px] xs:h-[40px] sm:h-[68px]">
+              <div className="animate-marquee-reverse whitespace-nowrap text-[9px] xs:text-[11px] sm:text-base font-black tracking-wider text-slate-950 flex items-center gap-3 sm:gap-4">
                 <span>★ STUDENT CAPSTONES</span>
                 <span>★ CSR ESCROW GRANTS</span>
                 <span>★ MUNICIPAL INFRA</span>
@@ -181,15 +199,15 @@ export default function HomePage() {
         </div>
 
         {/* Subtitle */}
-        <div className="mt-8 max-w-2xl mx-auto">
-          <p className="text-base sm:text-lg text-slate-600 font-medium leading-relaxed">
+        <div className="mt-6 sm:mt-8 max-w-2xl mx-auto px-2">
+          <p className="text-sm sm:text-lg text-slate-600 font-medium leading-relaxed">
             We bridge citizens reporting ground municipal bottlenecks, engineering university teams engineering verifiable hardware prototypes, and industry CSR funds disbursing milestone grants.
           </p>
         </div>
 
         {/* Not Logged In Quick Role Launch Pills (Shown only when unauthenticated) */}
         {!isLoggedIn && (
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-2 max-w-xl">
+          <div className="mt-6 sm:mt-8 flex flex-wrap items-center justify-center gap-2 max-w-xl px-2">
             {workstations.map((ws) => {
               const Icon = ws.icon;
               return (
@@ -197,7 +215,7 @@ export default function HomePage() {
                   key={ws.role}
                   type="button"
                   onClick={() => handleQuickLaunch(ws.role, ws.portalPath)}
-                  className={`px-3.5 py-1.5 rounded-full bg-white border border-slate-200 text-slate-700 text-xs font-bold shadow-2xs transition-all flex items-center gap-2 ${ws.color}`}
+                  className={`px-3 py-1.5 rounded-full bg-white border border-slate-200 text-slate-700 text-[11px] sm:text-xs font-bold shadow-2xs transition-all flex items-center gap-1.5 ${ws.color}`}
                 >
                   <Icon className="w-3.5 h-3.5 text-slate-500" />
                   <span>{ws.title}</span>
@@ -213,8 +231,8 @@ export default function HomePage() {
           ROLE-BASED JOIN MODAL (Triggered when user clicks "Select Role")
       ========================================================================= */}
       {isJoinModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs animate-in fade-in duration-150">
-          <div className="relative w-full max-w-lg bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-200 text-left">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/60 backdrop-blur-xs animate-in fade-in duration-150">
+          <div className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto bg-white rounded-3xl p-5 sm:p-8 shadow-2xl border border-slate-200 text-left">
             
             {/* Close Button */}
             <button

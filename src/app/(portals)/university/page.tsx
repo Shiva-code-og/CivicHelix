@@ -76,8 +76,8 @@ export default function UniversityPortalPage() {
       )}
 
       {/* Filter Category Bar */}
-      <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs">
+      <div className="p-3 sm:p-4 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs scrollbar-none w-full sm:w-auto -mx-1 px-1">
           {[
             { label: 'All Challenges', value: 'ALL' },
             { label: 'Water & Sanitation', value: 'WATER_SANITATION' },
@@ -90,7 +90,7 @@ export default function UniversityPortalPage() {
               key={cat.value}
               type="button"
               onClick={() => setSelectedCategory(cat.value)}
-              className={`px-3.5 py-1.5 rounded-full font-bold transition-all border ${
+              className={`px-3 py-1.5 rounded-full font-bold transition-all border shrink-0 text-xs ${
                 selectedCategory === cat.value
                   ? 'bg-blue-600 text-white border-blue-600 shadow-xs'
                   : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-blue-50 hover:text-blue-700'
@@ -101,7 +101,7 @@ export default function UniversityPortalPage() {
           ))}
         </div>
 
-        <span className="text-xs text-slate-500 font-bold">
+        <span className="text-[11px] sm:text-xs text-slate-500 font-bold shrink-0">
           Showing {filteredProblems.length} available challenges
         </span>
       </div>

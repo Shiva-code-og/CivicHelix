@@ -213,11 +213,11 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-white flex flex-col md:flex-row select-none m-0 p-0 overflow-x-hidden">
-      {/* Back to Home Floating Badge */}
+    <div className="w-full min-h-screen bg-white flex flex-col md:flex-row select-none m-0 p-0 overflow-x-hidden relative">
+      {/* Back to Home Badge (absolute so it doesn't float over form on mobile scroll) */}
       <Link
         href="/"
-        className="fixed top-6 left-6 z-30 flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 hover:bg-white text-slate-800 text-xs font-bold shadow-md border border-slate-200 backdrop-blur-md transition-all hover:scale-105"
+        className="absolute top-4 left-4 sm:top-6 sm:left-6 z-30 flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-white/90 hover:bg-white text-slate-800 text-xs font-bold shadow-md border border-slate-200 backdrop-blur-md transition-all hover:scale-105"
       >
         <ArrowLeft className="w-3.5 h-3.5 text-blue-600" />
         <span>Back to Home</span>
@@ -226,35 +226,35 @@ export default function LoginPage() {
       {/* =========================================================================
           LEFT HALF: Brand Typography & Unboxed Quote on Rich Civic Blue Gradient
       ========================================================================= */}
-      <div className="relative w-full md:w-1/2 min-h-[420px] md:min-h-screen bg-gradient-to-br from-[#1E3A8A] via-[#1E40AF] to-[#0F172A] flex flex-col justify-between p-8 sm:p-12 lg:p-16 overflow-hidden border-b md:border-b-0 md:border-r border-blue-900 text-white">
+      <div className="relative w-full md:w-1/2 min-h-0 md:min-h-screen bg-gradient-to-br from-[#1E3A8A] via-[#1E40AF] to-[#0F172A] flex flex-col justify-between p-6 pt-16 sm:p-12 lg:p-16 overflow-hidden border-b md:border-b-0 md:border-r border-blue-900 text-white">
         {/* Vertical Amber Accent Pillar on Left Edge */}
-        <div className="absolute left-0 top-0 bottom-0 w-3 sm:w-4 bg-amber-400 z-10 shadow-lg" />
+        <div className="absolute left-0 top-0 bottom-0 w-2.5 sm:w-4 bg-amber-400 z-10 shadow-lg" />
 
         {/* Ambient Subtle Background Glow */}
         <div className="absolute top-1/4 left-1/3 w-[380px] h-[380px] bg-blue-400/20 blur-[130px] rounded-full pointer-events-none" />
         <div className="absolute bottom-1/4 right-10 w-[300px] h-[300px] bg-amber-400/15 blur-[110px] rounded-full pointer-events-none" />
 
-        {/* Center: Hero Quote & Core Mission (No boxes, pure editorial typography) */}
-        <div className="relative z-10 my-auto py-10 space-y-8 max-w-lg">
-          <div className="space-y-3">
-            <span className="text-xs font-black uppercase tracking-widest text-amber-300">
+        {/* Center: Hero Quote & Core Mission */}
+        <div className="relative z-10 my-auto py-6 sm:py-10 space-y-5 sm:space-y-8 max-w-lg">
+          <div className="space-y-2 sm:space-y-3">
+            <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-amber-300">
               Transforming Civic Bottlenecks
             </span>
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.1]">
+            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.1]">
               CivicHelix
             </h2>
           </div>
 
           {/* Unboxed Quote with Sleek Left Accent Line */}
-          <div className="relative pl-6 border-l-2 border-amber-400/90 space-y-3.5">
-            <p className="text-base sm:text-lg text-blue-50/95 font-medium leading-relaxed italic">
+          <div className="relative pl-4 sm:pl-6 border-l-2 border-amber-400/90 space-y-2.5 sm:space-y-3.5">
+            <p className="text-sm sm:text-lg text-blue-50/95 font-medium leading-relaxed italic">
               “Civic problems don&apos;t need more paper reports. They need accredited engineering capstones, backed by corporate CSR capital and deployed under verified municipal authority.”
             </p>
-            <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs">
+            <div className="pt-1 flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs">
               <span className="font-extrabold text-amber-300 tracking-wide">
                 Triple-Helix Innovation Framework
               </span>
-              <span className="text-blue-200/70 text-[11px] font-medium">
+              <span className="text-blue-200/70 text-[10px] sm:text-[11px] font-medium">
                 Smart India Hackathon 2026
               </span>
             </div>
@@ -262,28 +262,28 @@ export default function LoginPage() {
         </div>
 
         {/* Bottom Tagline */}
-        <div className="relative z-10 text-xs text-blue-200/70 font-medium flex items-center gap-2">
+        <div className="relative z-10 text-[11px] sm:text-xs text-blue-200/70 font-medium flex items-center gap-2 mt-4 md:mt-0">
           <span>Official National SIH 2026 Civic Infrastructure Prototype</span>
         </div>
       </div>
 
       {/* =========================================================================
-          RIGHT HALF: Edge-to-Edge Authentication Form (Covers full screen)
+          RIGHT HALF: Edge-to-Edge Authentication Form
       ========================================================================= */}
-      <div className="w-full md:w-1/2 min-h-screen bg-slate-50/50 flex flex-col justify-center px-6 sm:px-12 lg:px-16 py-12">
-        <div className="max-w-md mx-auto w-full space-y-6">
+      <div className="w-full md:w-1/2 min-h-screen bg-slate-50/50 flex flex-col justify-center px-4 sm:px-12 lg:px-16 py-8 sm:py-12">
+        <div className="max-w-md mx-auto w-full space-y-5 sm:space-y-6">
           
           {/* Header Title */}
           <div>
             <div className="inline-flex items-center gap-2 mb-2">
-              <div className="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-xs shadow-sm shadow-blue-500/20">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-xs shadow-sm shadow-blue-500/20">
                 CH
               </div>
-              <span className="text-xs font-bold uppercase tracking-wider text-blue-600">
+              <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-blue-600">
                 CivicHelix Access
               </span>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+            <h1 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
               {isSignUp ? 'Create account' : 'Welcome back'}
             </h1>
             <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1 leading-relaxed">
@@ -293,8 +293,8 @@ export default function LoginPage() {
             </p>
           </div>
 
-          {/* 1-Click Instant Demo Portals (For Immediate Seamless Testing) */}
-          <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-2.5">
+          {/* 1-Click Instant Demo Portals */}
+          <div className="p-3.5 sm:p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-2 sm:space-y-2.5">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
                 <Zap className="w-3.5 h-3.5 text-amber-500" />
@@ -306,17 +306,20 @@ export default function LoginPage() {
             </div>
             
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-1">
-              {rolesList.map((r) => {
+              {rolesList.map((r, idx) => {
                 const Icon = r.icon;
+                const isLast = idx === rolesList.length - 1;
                 return (
                   <button
                     key={r.role}
                     type="button"
                     onClick={() => handleQuickDemoLogin(r.role)}
-                    className="p-2.5 rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-blue-50 hover:border-blue-300 text-left transition-all group"
+                    className={`p-2 sm:p-2.5 rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-blue-50 hover:border-blue-300 text-left transition-all group ${
+                      isLast ? 'col-span-2 sm:col-span-1' : ''
+                    }`}
                   >
                     <div className="flex items-center gap-1.5">
-                      <Icon className="w-3.5 h-3.5 text-slate-500 group-hover:text-blue-600 transition-colors" />
+                      <Icon className="w-3.5 h-3.5 text-slate-500 group-hover:text-blue-600 transition-colors shrink-0" />
                       <span className="text-xs font-bold text-slate-800 group-hover:text-blue-600 truncate">
                         {r.label}
                       </span>
@@ -330,19 +333,20 @@ export default function LoginPage() {
           {/* Role Selection Tabs */}
           <div className="space-y-1.5">
             <label className="text-xs font-bold text-slate-700">Select Active Role</label>
-            <div className="grid grid-cols-5 gap-1.5 p-1 bg-slate-100 rounded-xl">
-              {rolesList.map((r) => {
+            <div className="grid grid-cols-3 sm:grid-cols-5 gap-1.5 p-1 bg-slate-100 rounded-xl">
+              {rolesList.map((r, idx) => {
                 const isSelected = selectedRole === r.role;
+                const isLast = idx === rolesList.length - 1;
                 return (
                   <button
                     key={r.role}
                     type="button"
                     onClick={() => handleRoleSelect(r.role)}
-                    className={`py-2 px-1 rounded-lg text-[11px] font-bold transition-all text-center truncate ${
+                    className={`py-2 px-1.5 rounded-lg text-[11px] font-bold transition-all text-center truncate ${
                       isSelected
                         ? 'bg-white text-blue-600 shadow-xs'
                         : 'text-slate-600 hover:text-slate-900'
-                    }`}
+                    } ${isLast ? 'col-span-2 sm:col-span-1' : ''}`}
                   >
                     {r.label}
                   </button>

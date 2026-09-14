@@ -292,7 +292,7 @@ export default function InteractiveOcrLab() {
           </div>
 
           {/* Holographic Document Container with Laser Scan Beam */}
-          <div className="relative w-full h-[320px] rounded-2xl bg-slate-950 border border-slate-800 p-6 flex flex-col justify-between overflow-hidden shadow-inner group">
+          <div className="relative w-full h-[240px] sm:h-[280px] lg:h-[320px] rounded-2xl bg-slate-950 border border-slate-800 p-4 sm:p-6 flex flex-col justify-between overflow-hidden shadow-inner group">
             {/* Background Grid Pattern */}
             <div className="absolute inset-0 opacity-15 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:16px_16px]" />
 

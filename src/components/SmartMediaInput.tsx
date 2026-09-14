@@ -210,12 +210,12 @@ export default function SmartMediaInput({
   };
 
   return (
-    <div className="space-y-4 p-4 sm:p-5 rounded-2xl bg-slate-50/80 border border-slate-200 text-slate-900">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 p-3.5 sm:p-5 rounded-2xl bg-slate-50/80 border border-slate-200 text-slate-900">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
         <span className="text-[11px] font-black uppercase tracking-wider text-slate-800">
-          Multimodal Ingestion: Tesseract OCR &amp; Speech Input
+          Multimodal Ingestion: OCR &amp; Speech Input
         </span>
-        <span className="text-[10px] text-blue-700 font-bold bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-full">
+        <span className="self-start sm:self-auto text-[10px] text-blue-700 font-bold bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-full">
           Free Client-Side Processing
         </span>
       </div>
