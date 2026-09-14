@@ -1,0 +1,273 @@
+// ==============================================================================
+// Prisma Schema: Civic Problem-Solving & Triple-Helix Collaboration Platform
+// PostgreSQL with pgvector extension enabled
+// ==============================================================================
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  directUrl  = env("DIRECT_URL")
+  extensions = [pgvector(map: "vector")]
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+// ------------------------------------------------------------------------------
+// ENUMS
+// ------------------------------------------------------------------------------
+
+enum Role {
+  CITIZEN
+  STUDENT
+  FACULTY
+  INDUSTRY
+  GOVT_ADMIN
+}
+
+enum InstitutionType {
+  UNIVERSITY
+  INDUSTRY_PARTNER
+  GOVT_BODY
+}
+
+enum Category {
+  WATER_SANITATION
+  HEALTHCARE
+  AGRICULTURE
+  INFRASTRUCTURE_ROADS
+  ENVIRONMENT_WASTE
+  ENERGY_POWER
+  PUBLIC_SAFETY
+  EDUCATION
+}
+
+enum ProblemStatus {
+  SUBMITTED
+  VERIFIED
+  ADOPTED
+  IN_PROGRESS
+  PROTOTYPE_REVIEW
+  DEPLOYMENT_STAGING
+  RESOLVED
+  REJECTED
+}
+
+enum ProjectStatus {
+  PLANNING
+  ACTIVE
+  PROTOTYPE_READY
+  GOVT_REVIEW
+  PILOT_DEPLOYED
+  COMPLETED
+  TERMINATED
+}
+
+enum MilestoneStatus {
+  PENDING
+  IN_REVIEW
+  COMPLETED
+  REJECTED
+}
+
+// ------------------------------------------------------------------------------
+// USERS & TENANCY
+// ------------------------------------------------------------------------------
+
+model User {
+  id              String         @id @default(uuid())
+  name            String
+  email           String         @unique
+  role            Role           @default(CITIZEN)
+  authId          String         @unique @map("auth_id")
+  institutionId   String?        @map("institution_id")
+  institution     Institution?   @relation(fields: [institutionId], references: [id], onDelete: SetNull)
+  department      String?
+  avatarUrl       String?        @map("avatar_url")
+  createdAt       DateTime       @default(now()) @map("created_at")
+  updatedAt       DateTime       @updatedAt @map("updated_at")
+
+  // Relationships
+  problemsReported Problem[]     @relation("ReportedProblems")
+  problemUpvotes   ProblemUpvote[]
+  ledProjects      Project[]     @relation("FacultyLead")
+  teamMemberships  ProjectStudentMember[]
+  auditLogs        AuditLog[]
+
+  @@map("users")
+}
+
+model Institution {
+  id                  String          @id @default(uuid())
+  name                String
+  type                InstitutionType
+  latitude            Float
+  longitude           Float
+  departments         String[]        @default([]) // e.g. ["CIVIL", "ENVIRONMENTAL", "CSE", "BIOTECH"]
+  csrFocusAreas       Category[]      @default([]) @map("csr_focus_areas")
+  workloadCapacity    Int             @default(5)  @map("workload_capacity") // Max active projects
+  activeProjectCount  Int             @default(0)  @map("active_project_count")
+  contactEmail        String?         @map("contact_email")
+  createdAt           DateTime        @default(now()) @map("created_at")
+  updatedAt           DateTime        @updatedAt @map("updated_at")
+
+  // Relationships
+  members             User[]
+  adoptedProjects     Project[]       @relation("UniversityProjects")
+  sponsoredProjects   Project[]       @relation("IndustryProjects")
+
+  @@map("institutions")
+}
+
+// ------------------------------------------------------------------------------
+// CIVIC PROBLEMS & VECTOR CLUSTERING
+// ------------------------------------------------------------------------------
+
+model Problem {
+  id                  String          @id @default(uuid())
+  citizenId           String          @map("citizen_id")
+  citizen             User            @relation("ReportedProblems", fields: [citizenId], references: [id])
+  title               String
+  description         String
+  category            Category
+  status              ProblemStatus   @default(SUBMITTED)
+  
+  // AI & Multi-Factor Priority Metrics
+  severityScore       Float           @default(1.0) @map("severity_score") // 1.0 to 5.0
+  urgencyScore        Float           @default(1.0) @map("urgency_score")  // 1.0 to 5.0
+  upvoteCount         Int             @default(0)   @map("upvote_count")
+  geographicSpread    Float           @default(1.0) @map("geographic_spread") // Impact radius (km)
+  priorityScore       Float           @default(0.0) @map("priority_score") // Computed 0 - 100
+  
+  // Geospatial & Media
+  latitude            Float
+  longitude           Float
+  address             String?
+  rawMediaUrls        String[]        @default([])  @map("raw_media_urls")
+  voiceTranscript     String?         @map("voice_transcript")
+  
+  // Vector Embedding (1536 dims for text-embedding-3-small or OpenAI ada-002)
+  embedding           Unsupported("vector(1536)")?
+
+  // Deduplication Clusters
+  clusterId           String?         @map("cluster_id")
+  cluster             DuplicateCluster? @relation("ClusteredProblems", fields: [clusterId], references: [id], onDelete: SetNull)
+  primaryForCluster   DuplicateCluster? @relation("PrimaryProblem")
+
+  createdAt           DateTime        @default(now()) @map("created_at")
+  updatedAt           DateTime        @updatedAt @map("updated_at")
+
+  // Relationships
+  upvotes             ProblemUpvote[]
+  projects            Project[]
+
+  @@index([category, status])
+  @@index([priorityScore(sort: Desc)])
+  @@map("problems")
+}
+
+model DuplicateCluster {
+  id                  String          @id @default(uuid())
+  primaryProblemId    String          @unique @map("primary_problem_id")
+  primaryProblem      Problem         @relation("PrimaryProblem", fields: [primaryProblemId], references: [id], onDelete: Cascade)
+  relatedProblems     Problem[]       @relation("ClusteredProblems")
+  similarityScore     Float           @map("similarity_score")
+  clusterSize         Int             @default(1) @map("cluster_size")
+  createdAt           DateTime        @default(now()) @map("created_at")
+
+  @@map("duplicate_clusters")
+}
+
+model ProblemUpvote {
+  id                  String          @id @default(uuid())
+  problemId           String          @map("problem_id")
+  problem             Problem         @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  userId              String          @map("user_id")
+  user                User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt           DateTime        @default(now()) @map("created_at")
+
+  @@unique([problemId, userId])
+  @@map("problem_upvotes")
+}
+
+// ------------------------------------------------------------------------------
+// TRIPLE-HELIX COLLABORATIVE PROJECTS & MILESTONES
+// ------------------------------------------------------------------------------
+
+model Project {
+  id                  String          @id @default(uuid())
+  problemId           String          @map("problem_id")
+  problem             Problem         @relation(fields: [problemId], references: [id])
+  universityId        String          @map("university_id")
+  university          Institution     @relation("UniversityProjects", fields: [universityId], references: [id])
+  industryPartnerId   String?         @map("industry_partner_id")
+  industryPartner     Institution?    @relation("IndustryProjects", fields: [industryPartnerId], references: [id], onDelete: SetNull)
+  leadFacultyId       String          @map("lead_faculty_id")
+  leadFaculty         User            @relation("FacultyLead", fields: [leadFacultyId], references: [id])
+  
+  title               String
+  abstract            String?
+  status              ProjectStatus   @default(PLANNING)
+  repoUrl             String?         @map("repo_url")
+  prototypeUrl        String?         @map("prototype_url")
+  budgetAllocated     Float           @default(0.0) @map("budget_allocated")
+  
+  createdAt           DateTime        @default(now()) @map("created_at")
+  updatedAt           DateTime        @updatedAt @map("updated_at")
+
+  // Relationships
+  teamMembers         ProjectStudentMember[]
+  milestones          Milestone[]
+
+  @@map("projects")
+}
+
+model ProjectStudentMember {
+  id                  String          @id @default(uuid())
+  projectId           String          @map("project_id")
+  project             Project         @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  studentId           String          @map("student_id")
+  student             User            @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  roleDescription     String?         @map("role_description")
+  joinedAt            DateTime        @default(now()) @map("joined_at")
+
+  @@unique([projectId, studentId])
+  @@map("project_student_members")
+}
+
+model Milestone {
+  id                  String          @id @default(uuid())
+  projectId           String          @map("project_id")
+  project             Project         @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  title               String
+  description         String
+  targetDate          DateTime        @map("target_date")
+  status              MilestoneStatus @default(PENDING)
+  verificationProofUrl String?        @map("verification_proof_url")
+  govtFeedback        String?         @map("govt_feedback")
+  createdAt           DateTime        @default(now()) @map("created_at")
+  updatedAt           DateTime        @updatedAt @map("updated_at")
+
+  @@map("milestones")
+}
+
+// ------------------------------------------------------------------------------
+// AUDIT LOGGING (GOVERNMENT COMPLIANCE & SLA AUDITING)
+// ------------------------------------------------------------------------------
+
+model AuditLog {
+  id                  String          @id @default(uuid())
+  actorId             String?         @map("actor_id")
+  actor               User?           @relation(fields: [actorId], references: [id], onDelete: SetNull)
+  action              String          // e.g., "PROBLEM_SUBMITTED", "CLUSTER_MERGED", "CHALLENGE_ADOPTED", "MILESTONE_APPROVED"
+  entityType          String          @map("entity_type")
+  entityId            String          @map("entity_id")
+  metadata            Json?           @default("{}")
+  ipAddress           String?         @map("ip_address")
+  timestamp           DateTime        @default(now())
+
+  @@index([entityType, entityId])
+  @@map("audit_logs")
+}

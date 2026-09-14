@@ -1,0 +1,46 @@
+# Dependencies
+/node_modules
+/.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# Next.js build output
+/.next/
+/out/
+tsconfig.tsbuildinfo
+
+# Production
+/build
+
+# Environment Variables & Secrets (CRITICAL: Do NOT commit secrets)
+.env
+.env*.local
+.env.local
+.env.production
+.env.development
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# OS Files
+.DS_Store
+*.pem
+Thumbs.db
+
+# IDE & Editor files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Temporary & Cache files
+*.tmp
+*.log
+*.traineddata
+
