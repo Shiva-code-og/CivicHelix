@@ -24,6 +24,7 @@ import { Category } from '@/types';
 import { formatCivicReport, sanitizeOcrText, deduplicateRepeatedPhrases } from '@/utils/textFormatter';
 import { useCivicData } from '@/context/CivicDataContext';
 import { downloadIncidentReportPdf, printCivicIncidentReport, CivicReportData } from '@/utils/pdfGenerator';
+import { supabase } from '@/lib/supabase';
 
 interface NewTaskModalProps {
   isOpen: boolean;
@@ -165,7 +166,7 @@ export default function NewTaskModal({ isOpen, onClose, onCreated }: NewTaskModa
         slaHours,
       };
 
-      // 3. Add problem to client-side reactive civic data context
+      // 3. Add problem to client-side reactive civic data context (updates UI immediately)
       addProblem({
         title: `[${reportId}] ${title}`,
         description,
@@ -175,7 +176,28 @@ export default function NewTaskModal({ isOpen, onClose, onCreated }: NewTaskModa
         address: `${address}, ${wardOrSector}, ${district} - ${pincode}`,
       });
 
-      // 4. Automatically trigger PDF download
+      // 4. Also persist directly to Supabase cloud database
+      try {
+        await supabase.from('problems').insert([
+          {
+            title: `[${reportId}] ${title}`,
+            description: `${description}\n\n[Citizen: ${reporterName} | Phone: ${reporterPhone} | Ward: ${wardOrSector}]`,
+            category,
+            address: `${address}, ${wardOrSector}, ${district} - ${pincode}`,
+            latitude: 28.6139,
+            longitude: 77.2090,
+            status: 'SUBMITTED',
+            severity_score: severity === 'CRITICAL' ? 5.0 : severity === 'HIGH' ? 4.0 : severity === 'MEDIUM' ? 3.0 : 2.0,
+            priority_score: severity === 'CRITICAL' ? 95.0 : severity === 'HIGH' ? 88.0 : severity === 'MEDIUM' ? 74.0 : 60.0,
+            voice_transcript: audioTranscript || null,
+            raw_media_urls: ocrEvidence ? [ocrEvidence] : [],
+          },
+        ]);
+      } catch (dbErr) {
+        console.warn('Supabase DB persistence notice (offline/demo fallback):', dbErr);
+      }
+
+      // 5. Automatically trigger PDF download
       await downloadIncidentReportPdf(reportData);
 
       // 5. Store submitted report to display success screen

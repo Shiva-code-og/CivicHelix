@@ -1,7 +1,8 @@
 'use client';
 
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Category } from '@/types';
+import { supabase } from '@/lib/supabase';
 
 export type LifecycleStage =
   | '1_CITIZEN_SUBMITTED'
@@ -445,6 +446,83 @@ export function CivicDataProvider({ children }: { children: React.ReactNode }) {
   const [problems, setProblems] = useState<CivicProblemItem[]>(INITIAL_PROBLEMS);
   const [selectedProblem, setSelectedProblem] = useState<CivicProblemItem | null>(INITIAL_PROBLEMS[0]);
   const [filterCategory, setFilterCategory] = useState<string>('ALL');
+
+  // Load live submitted problems from Supabase on mount
+  useEffect(() => {
+    async function loadSupabaseProblems() {
+      try {
+        const { data, error } = await supabase
+          .from('problems')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (data && data.length > 0) {
+          const mapped: CivicProblemItem[] = data.map((item) => ({
+            id: item.id,
+            title: item.title,
+            description: item.description,
+            category: item.category,
+            latitude: item.latitude || 28.6139,
+            longitude: item.longitude || 77.209,
+            address: item.address || 'Municipal Ward',
+            priorityScore: item.priority_score || 85,
+            slaRemainingHours: 36,
+            reportsCount: 1,
+            upvotesCount: item.upvote_count || 1,
+            status: (item.status as any) || 'REPORTED',
+            stage: '1_CITIZEN_SUBMITTED',
+            createdAt: item.created_at || new Date().toISOString(),
+          }));
+
+          setProblems((prev) => {
+            const existingIds = new Set(prev.map((p) => p.id));
+            const newRecords = mapped.filter((m) => !existingIds.has(m.id));
+            return [...newRecords, ...prev];
+          });
+        }
+      } catch (err) {
+        console.warn('Could not load problems from Supabase database:', err);
+      }
+    }
+
+    loadSupabaseProblems();
+
+    // Realtime Supabase change listener
+    const channel = supabase
+      .channel('public:problems_changes')
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'problems' },
+        (payload) => {
+          const item = payload.new as any;
+          if (!item || !item.id) return;
+
+          const newItem: CivicProblemItem = {
+            id: item.id,
+            title: item.title,
+            description: item.description,
+            category: item.category,
+            latitude: item.latitude || 28.6139,
+            longitude: item.longitude || 77.209,
+            address: item.address || 'Municipal Ward',
+            priorityScore: item.priority_score || 85,
+            slaRemainingHours: 36,
+            reportsCount: 1,
+            upvotesCount: item.upvote_count || 1,
+            status: (item.status as any) || 'REPORTED',
+            stage: '1_CITIZEN_SUBMITTED',
+            createdAt: item.created_at || new Date().toISOString(),
+          };
+
+          setProblems((prev) => [newItem, ...prev.filter((p) => p.id !== newItem.id)]);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
   // Stage 1: Citizen submits a query
   const addProblem = (newProb: Omit<CivicProblemItem, 'id' | 'createdAt' | 'upvotesCount' | 'priorityScore' | 'slaRemainingHours' | 'reportsCount' | 'stage' | 'status'>): CivicProblemItem => {
