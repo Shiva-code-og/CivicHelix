@@ -145,8 +145,8 @@ export default function HomePage() {
           <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-slate-950 uppercase leading-none">
             <span>Engineering</span>
             
-            {/* Dark Marquee Pill */}
-            <div className="relative inline-flex items-center overflow-hidden bg-slate-950 text-white rounded-full px-4 sm:px-6 py-2 sm:py-3.5 shadow-xl border border-slate-800 max-w-[240px] sm:max-w-[340px] h-[48px] sm:h-[68px]">
+            {/* Dark Marquee Box */}
+            <div className="relative inline-flex items-center overflow-hidden bg-slate-950 text-white rounded-xl px-4 sm:px-6 py-2 sm:py-3.5 shadow-xl border border-slate-800 max-w-[240px] sm:max-w-[340px] h-[48px] sm:h-[68px]">
               <div className="animate-marquee whitespace-nowrap text-xs sm:text-base font-black tracking-wider text-amber-300 flex items-center gap-4">
                 <span>★ TRIPLE-HELIX VERIFIED</span>
                 <span>★ NO PAPER REPORTS</span>
@@ -164,8 +164,8 @@ export default function HomePage() {
           <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-slate-950 uppercase leading-none">
             <span>Solutions</span>
             
-            {/* Radiant Yellow Marquee Pill (Signature TheAlien.Design Style) */}
-            <div className="relative inline-flex items-center overflow-hidden bg-amber-400 text-slate-950 rounded-full px-4 sm:px-6 py-2 sm:py-3.5 shadow-xl border border-amber-300 max-w-[260px] sm:max-w-[360px] h-[48px] sm:h-[68px]">
+            {/* Radiant Yellow Marquee Box (Sleek Geometric Box) */}
+            <div className="relative inline-flex items-center overflow-hidden bg-amber-400 text-slate-950 rounded-xl px-4 sm:px-6 py-2 sm:py-3.5 shadow-xl border border-amber-300 max-w-[260px] sm:max-w-[360px] h-[48px] sm:h-[68px]">
               <div className="animate-marquee-reverse whitespace-nowrap text-xs sm:text-base font-black tracking-wider text-slate-950 flex items-center gap-4">
                 <span>★ STUDENT CAPSTONES</span>
                 <span>★ CSR ESCROW GRANTS</span>
